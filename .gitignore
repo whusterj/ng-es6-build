@@ -1,0 +1,5 @@
+__pycache__/
+client/dist/
+node_modules/
+.vagrant/
+ubuntu-xenial-16.04-cloudimg-console.log

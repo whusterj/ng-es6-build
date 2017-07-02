@@ -1,0 +1,66 @@
+{% load static %}
+
+{% comment %}
+
+  IMPORTANT: All other templates should extend this one. This template is preprocessed
+  by Webpack, which injects the hashed filenames of our latest build.
+
+  ALl other templates in the app are simply copied from the `client/src/` directory to
+  the `client/dist` directory by webpack.
+
+{% endcomment %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {# Page-level meta tags can be added here. #}
+  {% block page_meta %}
+  {% endblock page_meta %}
+
+  <title>{% block title %}{% endblock title %}</title>
+
+  {# Webpack injects preprocessed LESS styles here. #}
+  <% for (var css in htmlWebpackPlugin.files.css) { %>
+  <link href="{% static '<%= htmlWebpackPlugin.files.css[css] %>' %}" rel="stylesheet">
+  <% } %>
+
+</head>
+<body class="{% block page_class %}{% endblock page_class %} cloak">
+
+  {# Conditional tags ended in IE10, but will still be displayed in IE 9 and below. #}
+  <!--[if IE]>
+  <div style="background: #ffe25d; padding: 10px 30px;">
+    <p>Warning: You are using an unsupported version of Internet Explorer. Please upgrade
+       to a newer version of Internet Explorer or <a href='http://browsehappy.com/'>another
+       modern browser, like Chrome, Safari or Firefox.</a></p>
+  </div>
+  <![endif]-->
+
+  {# No JS warning -- our app requires JavaScript under all circumstances. #}
+  <noscript>
+    <div style="background: #ffe25d; padding: 10px 30px;">
+      <h1>JavaScript is Required</h1>
+      <p>You are seeing this message because JavaScript is disabled in your browser.
+         Please enable JavaScript in order to use this page.</p>
+    </div>
+  </noscript>
+
+  <div ng-app="app">
+
+    <main>
+    {% block content %}{% endblock content %}
+    </main>
+
+  </div>
+
+  {# Webpack injects our compiled JavaScript app here. #}
+  <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+  <script src="{% static '<%= htmlWebpackPlugin.files.chunks[chunk].entry %>' %}"></script>
+  <% } %>
+
+</body>
+</html>
